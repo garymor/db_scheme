@@ -1,0 +1,2804 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 13.11 (Ubuntu 13.11-1.pgdg20.04+1)
+-- Dumped by pg_dump version 15.3 (Ubuntu 15.3-1.pgdg20.04+1)
+
+-- Started on 2023-06-20 15:55:26 IDT
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 7 (class 2615 OID 232881)
+-- Name: myschema; Type: SCHEMA; Schema: -; Owner: myuser
+--
+
+CREATE SCHEMA myschema;
+
+
+ALTER SCHEMA myschema OWNER TO myuser;
+
+--
+-- TOC entry 4 (class 2615 OID 2200)
+-- Name: public; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+-- *not* creating schema, since initdb creates it
+
+
+ALTER SCHEMA public OWNER TO postgres;
+
+--
+-- TOC entry 6 (class 2615 OID 232880)
+-- Name: schema_name; Type: SCHEMA; Schema: -; Owner: myuser
+--
+
+CREATE SCHEMA schema_name;
+
+
+ALTER SCHEMA schema_name OWNER TO myuser;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 252 (class 1259 OID 166614)
+-- Name: agreement_survey; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.agreement_survey (
+    procedureid integer NOT NULL,
+    uid character varying(255),
+    uname character varying(255),
+    businessnum character varying(255),
+    customer_name character varying(255) DEFAULT ''::character varying,
+    tasks json,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.agreement_survey OWNER TO myuser;
+
+--
+-- TOC entry 217 (class 1259 OID 42007)
+-- Name: agregates_labprcs; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.agregates_labprcs (
+    barcode character varying(255) NOT NULL,
+    businessnum character varying(255),
+    customer_name character varying(255) DEFAULT ''::character varying,
+    procedureid character varying(255),
+    a character varying(255),
+    b character varying(255),
+    c character varying(255),
+    c1 character varying(255),
+    y0 character varying(255),
+    x0 character varying(255),
+    derug json,
+    shtifa json,
+    sandequal json,
+    weightcrctrs json,
+    plasticity json,
+    summarize json,
+    mount_module2 boolean DEFAULT false,
+    mount_module3 boolean DEFAULT false,
+    mount_module4 boolean DEFAULT false,
+    mount_module5 boolean DEFAULT false,
+    mount_module6 boolean DEFAULT false,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    uid character varying(255)
+);
+
+
+ALTER TABLE public.agregates_labprcs OWNER TO myuser;
+
+--
+-- TOC entry 222 (class 1259 OID 42394)
+-- Name: alerts; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.alerts (
+    id integer NOT NULL,
+    model_type character varying(255),
+    users json,
+    procedure character varying(255),
+    atomic_task character varying(255),
+    tofes character varying(255),
+    description character varying(255),
+    bn character varying(255),
+    customer_name character varying(255),
+    techid character varying(255),
+    tech_name character varying(255),
+    missing_field_type character varying(255),
+    missing_field_type_id character varying(255),
+    missing_field_type_name character varying(255),
+    invalid_field character varying(255),
+    invalid_field_value character varying(255),
+    invalid_field_desc character varying(255),
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    extra_data json,
+    resolved boolean DEFAULT false,
+    resolved_reason character varying(255),
+    push boolean DEFAULT false,
+    push_type character varying(255) DEFAULT 'email'::character varying,
+    html text,
+    qc_m_sent boolean DEFAULT false,
+    mngr_sent boolean DEFAULT false
+);
+
+
+ALTER TABLE public.alerts OWNER TO myuser;
+
+--
+-- TOC entry 221 (class 1259 OID 42392)
+-- Name: alerts_id_seq; Type: SEQUENCE; Schema: public; Owner: myuser
+--
+
+CREATE SEQUENCE public.alerts_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.alerts_id_seq OWNER TO myuser;
+
+--
+-- TOC entry 3579 (class 0 OID 0)
+-- Dependencies: 221
+-- Name: alerts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: myuser
+--
+
+ALTER SEQUENCE public.alerts_id_seq OWNED BY public.alerts.id;
+
+
+--
+-- TOC entry 220 (class 1259 OID 42078)
+-- Name: alertsmodel; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.alertsmodel (
+    id integer NOT NULL,
+    type character varying(255),
+    users json,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    instances json,
+    k1 character varying(255)
+);
+
+
+ALTER TABLE public.alertsmodel OWNER TO myuser;
+
+--
+-- TOC entry 219 (class 1259 OID 42076)
+-- Name: alertsmodel_id_seq; Type: SEQUENCE; Schema: public; Owner: myuser
+--
+
+CREATE SEQUENCE public.alertsmodel_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.alertsmodel_id_seq OWNER TO myuser;
+
+--
+-- TOC entry 3580 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: alertsmodel_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: myuser
+--
+
+ALTER SEQUENCE public.alertsmodel_id_seq OWNED BY public.alertsmodel.id;
+
+
+--
+-- TOC entry 210 (class 1259 OID 33763)
+-- Name: atomictasks; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.atomictasks (
+    id character varying(255) NOT NULL,
+    modeltext character varying(255),
+    customerid bigint,
+    customer_name character varying(255),
+    tecnichianid integer,
+    tecnichian_name character varying(255),
+    atomic_task_name character varying(255),
+    atomic_task_name_heb character varying(255),
+    instance_atomic_task_id integer,
+    procedureid integer,
+    procedure_free_text character varying(255),
+    atomic_task_free_text character varying(255),
+    startdate date,
+    actual_startdate timestamp with time zone,
+    extradatafield character varying(255),
+    status character varying(255),
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    tech_comment character varying(255),
+    factory_bn character varying(255),
+    factory_name character varying(255)
+);
+
+
+ALTER TABLE public.atomictasks OWNER TO myuser;
+
+--
+-- TOC entry 240 (class 1259 OID 51823)
+-- Name: bank_quality_tests; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.bank_quality_tests (
+    id integer NOT NULL,
+    scope character varying(255),
+    heb_scope character varying(255),
+    paragraph character varying(255),
+    paragraph_text character varying(255),
+    details text DEFAULT ''::text,
+    type_crucial boolean,
+    "order" integer,
+    img_upload boolean,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.bank_quality_tests OWNER TO myuser;
+
+--
+-- TOC entry 239 (class 1259 OID 51821)
+-- Name: bank_quality_tests_id_seq; Type: SEQUENCE; Schema: public; Owner: myuser
+--
+
+CREATE SEQUENCE public.bank_quality_tests_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.bank_quality_tests_id_seq OWNER TO myuser;
+
+--
+-- TOC entry 3581 (class 0 OID 0)
+-- Dependencies: 239
+-- Name: bank_quality_tests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: myuser
+--
+
+ALTER SEQUENCE public.bank_quality_tests_id_seq OWNED BY public.bank_quality_tests.id;
+
+
+--
+-- TOC entry 243 (class 1259 OID 51874)
+-- Name: bank_trnng_mltchoise; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.bank_trnng_mltchoise (
+    id integer NOT NULL,
+    quetion_details text DEFAULT ''::text,
+    multiple_choise_detailes json,
+    mngr_thcn_afec boolean DEFAULT false,
+    usher boolean DEFAULT false,
+    loader boolean DEFAULT false,
+    courtier boolean DEFAULT false,
+    shovel boolean DEFAULT false,
+    carrier boolean DEFAULT false,
+    pump_operator boolean DEFAULT false,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    crct_answer character varying(255)
+);
+
+
+ALTER TABLE public.bank_trnng_mltchoise OWNER TO myuser;
+
+--
+-- TOC entry 242 (class 1259 OID 51872)
+-- Name: bank_trnng_mltchoise_id_seq; Type: SEQUENCE; Schema: public; Owner: myuser
+--
+
+CREATE SEQUENCE public.bank_trnng_mltchoise_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.bank_trnng_mltchoise_id_seq OWNER TO myuser;
+
+--
+-- TOC entry 3582 (class 0 OID 0)
+-- Dependencies: 242
+-- Name: bank_trnng_mltchoise_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: myuser
+--
+
+ALTER SEQUENCE public.bank_trnng_mltchoise_id_seq OWNED BY public.bank_trnng_mltchoise.id;
+
+
+--
+-- TOC entry 249 (class 1259 OID 117462)
+-- Name: bank_trnng_mltchoise_saas; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.bank_trnng_mltchoise_saas (
+    id integer NOT NULL,
+    quetion_details text DEFAULT ''::text,
+    multiple_choise_detailes json,
+    mngr_thcn_afec boolean DEFAULT false,
+    usher boolean DEFAULT false,
+    loader boolean DEFAULT false,
+    courtier boolean DEFAULT false,
+    shovel boolean DEFAULT false,
+    carrier boolean DEFAULT false,
+    pump_operator boolean DEFAULT false,
+    crct_answer character varying(255),
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.bank_trnng_mltchoise_saas OWNER TO myuser;
+
+--
+-- TOC entry 248 (class 1259 OID 117460)
+-- Name: bank_trnng_mltchoise_saas_id_seq; Type: SEQUENCE; Schema: public; Owner: myuser
+--
+
+CREATE SEQUENCE public.bank_trnng_mltchoise_saas_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.bank_trnng_mltchoise_saas_id_seq OWNER TO myuser;
+
+--
+-- TOC entry 3583 (class 0 OID 0)
+-- Dependencies: 248
+-- Name: bank_trnng_mltchoise_saas_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: myuser
+--
+
+ALTER SEQUENCE public.bank_trnng_mltchoise_saas_id_seq OWNED BY public.bank_trnng_mltchoise_saas.id;
+
+
+--
+-- TOC entry 246 (class 1259 OID 101084)
+-- Name: calibration; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.calibration (
+    id integer NOT NULL,
+    procedureid integer,
+    businessnum character varying(255),
+    customer_name character varying(255) DEFAULT ''::character varying,
+    factory_name character varying(255) DEFAULT ''::character varying,
+    uid character varying(255),
+    uname character varying(255),
+    customersite character varying(255),
+    menu_blob json,
+    checked_data json,
+    insd_frm_tab_state json,
+    cement_w json,
+    cement_w_3rd json,
+    water_w json,
+    water_w_3rd json,
+    musaf_w json,
+    musaf_w_3rd json,
+    agregate_w json,
+    agregate_w_3rd json,
+    other json,
+    status boolean DEFAULT false,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.calibration OWNER TO myuser;
+
+--
+-- TOC entry 233 (class 1259 OID 51286)
+-- Name: cement; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.cement (
+    id integer NOT NULL,
+    procedureid integer,
+    status character varying(255) DEFAULT ''::character varying,
+    customer_name character varying(255),
+    customerid bigint,
+    customersite character varying(255),
+    common_cement_class character varying(255),
+    mpa_2 character varying(255),
+    mpa_28 character varying(255),
+    blane character varying(255),
+    img_src text,
+    supplier_id character varying(255),
+    tech_comment character varying(255),
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.cement OWNER TO myuser;
+
+--
+-- TOC entry 232 (class 1259 OID 51224)
+-- Name: cement_type; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.cement_type (
+    id integer NOT NULL,
+    common_cement_class character varying(255),
+    notation character varying(255),
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.cement_type OWNER TO myuser;
+
+--
+-- TOC entry 231 (class 1259 OID 51222)
+-- Name: cement_type_id_seq; Type: SEQUENCE; Schema: public; Owner: myuser
+--
+
+CREATE SEQUENCE public.cement_type_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cement_type_id_seq OWNER TO myuser;
+
+--
+-- TOC entry 3584 (class 0 OID 0)
+-- Dependencies: 231
+-- Name: cement_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: myuser
+--
+
+ALTER SEQUENCE public.cement_type_id_seq OWNED BY public.cement_type.id;
+
+
+--
+-- TOC entry 256 (class 1259 OID 199439)
+-- Name: complaint_form; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.complaint_form (
+    id integer NOT NULL,
+    businessnum character varying(255),
+    customer_name character varying(255) DEFAULT ''::character varying,
+    customersite character varying(255),
+    uid character varying(255),
+    detailes jsonb,
+    docs jsonb,
+    is_unfit_prdct boolean,
+    factory_name character varying(255),
+    factory_bn character varying(255),
+    status boolean,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.complaint_form OWNER TO myuser;
+
+--
+-- TOC entry 255 (class 1259 OID 199437)
+-- Name: complaint_form_id_seq; Type: SEQUENCE; Schema: public; Owner: myuser
+--
+
+CREATE SEQUENCE public.complaint_form_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.complaint_form_id_seq OWNER TO myuser;
+
+--
+-- TOC entry 3585 (class 0 OID 0)
+-- Dependencies: 255
+-- Name: complaint_form_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: myuser
+--
+
+ALTER SEQUENCE public.complaint_form_id_seq OWNED BY public.complaint_form.id;
+
+
+--
+-- TOC entry 254 (class 1259 OID 191213)
+-- Name: corrective_actions_execute; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.corrective_actions_execute (
+    id integer NOT NULL,
+    procedureid integer,
+    uid character varying(255),
+    "row" integer,
+    c1 character varying(255),
+    c2 character varying(255),
+    c3 character varying(255),
+    c4 character varying(255),
+    c5 timestamp with time zone,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.corrective_actions_execute OWNER TO myuser;
+
+--
+-- TOC entry 253 (class 1259 OID 191211)
+-- Name: corrective_actions_execute_id_seq; Type: SEQUENCE; Schema: public; Owner: myuser
+--
+
+CREATE SEQUENCE public.corrective_actions_execute_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.corrective_actions_execute_id_seq OWNER TO myuser;
+
+--
+-- TOC entry 3586 (class 0 OID 0)
+-- Dependencies: 253
+-- Name: corrective_actions_execute_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: myuser
+--
+
+ALTER SEQUENCE public.corrective_actions_execute_id_seq OWNED BY public.corrective_actions_execute.id;
+
+
+--
+-- TOC entry 257 (class 1259 OID 199451)
+-- Name: corrective_actions_form; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.corrective_actions_form (
+    procedureid character varying(255) NOT NULL,
+    procedure_model character varying(255),
+    businessnum character varying(255),
+    customer_name character varying(255) DEFAULT ''::character varying,
+    customersite character varying(255),
+    uid character varying(255),
+    requirements jsonb,
+    act json,
+    outcome_trgr character varying(255),
+    input_p character varying(255),
+    t_id character varying(255),
+    initiator character varying(255),
+    requirements_accmltr integer,
+    form_l json DEFAULT '[]'::json,
+    status boolean,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.corrective_actions_form OWNER TO myuser;
+
+--
+-- TOC entry 218 (class 1259 OID 42033)
+-- Name: cto; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.cto (
+    data json,
+    extradata json,
+    guidelines character varying(255),
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    id character varying(255)
+);
+
+
+ALTER TABLE public.cto OWNER TO myuser;
+
+--
+-- TOC entry 236 (class 1259 OID 51327)
+-- Name: cto_table_afec_musaf_list; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.cto_table_afec_musaf_list (
+    id character varying(255) NOT NULL,
+    density_min double precision,
+    density_max double precision,
+    ph_min double precision,
+    ph_max double precision,
+    solids_content_min double precision,
+    solids_content_max double precision,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    type_code character varying(255),
+    musaf_kind character varying(255)
+);
+
+
+ALTER TABLE public.cto_table_afec_musaf_list OWNER TO myuser;
+
+--
+-- TOC entry 224 (class 1259 OID 42575)
+-- Name: cto_table_number_five; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.cto_table_number_five (
+    id integer NOT NULL,
+    concrete_type integer,
+    concrete_kind character varying(255),
+    min_7 integer,
+    max_7 integer,
+    min_28 integer,
+    min_28_average integer,
+    max_28 integer,
+    min_28_nominal integer,
+    average_change_7_28 integer DEFAULT 30,
+    maximum_considr boolean DEFAULT false,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.cto_table_number_five OWNER TO myuser;
+
+--
+-- TOC entry 223 (class 1259 OID 42573)
+-- Name: cto_table_number_five_id_seq; Type: SEQUENCE; Schema: public; Owner: myuser
+--
+
+CREATE SEQUENCE public.cto_table_number_five_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cto_table_number_five_id_seq OWNER TO myuser;
+
+--
+-- TOC entry 3587 (class 0 OID 0)
+-- Dependencies: 223
+-- Name: cto_table_number_five_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: myuser
+--
+
+ALTER SEQUENCE public.cto_table_number_five_id_seq OWNED BY public.cto_table_number_five.id;
+
+
+--
+-- TOC entry 235 (class 1259 OID 51319)
+-- Name: cto_table_number_nine; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.cto_table_number_nine (
+    id character varying(255) NOT NULL,
+    musaf_kind character varying(255),
+    musaf_nick_name character varying(255),
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.cto_table_number_nine OWNER TO myuser;
+
+--
+-- TOC entry 207 (class 1259 OID 33684)
+-- Name: cube; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.cube (
+    id bigint NOT NULL,
+    peroid character varying(255),
+    procedureid integer,
+    "createdAt" timestamp with time zone NOT NULL,
+    status character varying(255) DEFAULT ''::character varying,
+    yetzika boolean DEFAULT false,
+    peruk boolean DEFAULT false,
+    ashpara boolean DEFAULT false,
+    unashpara boolean DEFAULT false,
+    age character varying(255),
+    weight character varying(255),
+    mpa character varying(255) DEFAULT '0'::character varying,
+    "updatedAt" timestamp with time zone NOT NULL,
+    shipment_nmbr character varying(255),
+    concrete_type character varying(255),
+    concrete_kind character varying(255),
+    mixernum character varying(255),
+    exposure_rate character varying(255) DEFAULT 'לא נמסר'::character varying,
+    external_lab character varying(255) DEFAULT 'none'::character varying,
+    customer_name character varying(255),
+    "user" character varying(255),
+    customerid character varying(255),
+    y1 character varying(255),
+    y2 character varying(255),
+    mpa_valid boolean DEFAULT true,
+    mpa_updated boolean DEFAULT false,
+    k_mpa_invalid boolean DEFAULT false,
+    declined_tested character varying(255),
+    temp character varying(255),
+    factory_bn character varying(255) DEFAULT ''::character varying,
+    press_dd date,
+    lab_associated boolean DEFAULT false,
+    qcmanger_associated boolean DEFAULT false,
+    current_holder_id integer,
+    current_holder_name character varying(255),
+    ended boolean DEFAULT false,
+    is_musaf_prcs boolean DEFAULT false,
+    musaf character varying(255),
+    musaf_barcode character varying(255),
+    actual_press_dd timestamp with time zone,
+    age_units character varying(255),
+    user_logged character varying(255),
+    tracking json,
+    current_reciver_id integer,
+    pickd_up boolean,
+    current_reciver_name character varying(255)
+);
+
+
+ALTER TABLE public.cube OWNER TO myuser;
+
+--
+-- TOC entry 211 (class 1259 OID 41341)
+-- Name: customers; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.customers (
+    name character varying(255) NOT NULL,
+    type character varying(255),
+    businessnum bigint NOT NULL,
+    thirdside json,
+    forms_list json,
+    "approveList_contactforms" json,
+    supplier_list json,
+    products json,
+    mixer_list json,
+    k_factor character varying(255) DEFAULT '1'::character varying,
+    limits json,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    factory character varying(255),
+    mixtures_book json,
+    manpower_list json,
+    numof_factories character varying(255),
+    last_7days_results_mpa json DEFAULT '[]'::json,
+    last_28days_results_mpa json DEFAULT '[]'::json,
+    lab_list json,
+    ts_si_build character varying(255),
+    ts_si_quality character varying(255),
+    form_code character varying(255),
+    form_edition character varying(255),
+    is_active boolean DEFAULT false,
+    quarry_list json,
+    model_regenerate_per_year json DEFAULT '[]'::json
+);
+
+
+ALTER TABLE public.customers OWNER TO myuser;
+
+--
+-- TOC entry 213 (class 1259 OID 41528)
+-- Name: factories; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.factories (
+    id integer NOT NULL,
+    name character varying(255),
+    _id character varying(255),
+    customer_id character varying(255),
+    type character varying(255),
+    businessnum character varying(255),
+    thirdside json,
+    "formsList" json,
+    products json,
+    manpower_list json,
+    k_factor character varying(255) DEFAULT '3'::character varying,
+    limits json,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.factories OWNER TO myuser;
+
+--
+-- TOC entry 212 (class 1259 OID 41526)
+-- Name: factories_id_seq; Type: SEQUENCE; Schema: public; Owner: myuser
+--
+
+CREATE SEQUENCE public.factories_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.factories_id_seq OWNER TO myuser;
+
+--
+-- TOC entry 3588 (class 0 OID 0)
+-- Dependencies: 212
+-- Name: factories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: myuser
+--
+
+ALTER SEQUENCE public.factories_id_seq OWNED BY public.factories.id;
+
+
+--
+-- TOC entry 247 (class 1259 OID 109272)
+-- Name: inventory; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.inventory (
+    id integer NOT NULL,
+    procedureid integer,
+    businessnum character varying(255),
+    customer_name character varying(255) DEFAULT ''::character varying,
+    factory_name character varying(255) DEFAULT ''::character varying,
+    uid character varying(255),
+    uname character varying(255),
+    customersite character varying(255),
+    menu_blob json,
+    checked_data json,
+    insd_frm_tab_state json,
+    moisture_test_rod json,
+    link_time_wiket json,
+    ph_nd_tmp json,
+    sptlweight_aircntnt json,
+    gauge_go json,
+    molds_for_concrete json,
+    verification_weights json,
+    status boolean DEFAULT false,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    list_data json
+);
+
+
+ALTER TABLE public.inventory OWNER TO myuser;
+
+--
+-- TOC entry 245 (class 1259 OID 84760)
+-- Name: mixer_uniformity; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.mixer_uniformity (
+    id integer NOT NULL,
+    procedureid integer,
+    businessnum character varying(255),
+    customer_name character varying(255) DEFAULT ''::character varying,
+    uid character varying(255),
+    uname character varying(255),
+    customersite character varying(255),
+    menu_blob json,
+    checked_data json,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    status boolean DEFAULT false,
+    site_name character varying(255) DEFAULT ''::character varying,
+    mixer_num character varying(255),
+    delivery_certific character varying(255),
+    blob json,
+    tab character varying(255),
+    save_option boolean,
+    ended boolean DEFAULT false
+);
+
+
+ALTER TABLE public.mixer_uniformity OWNER TO myuser;
+
+--
+-- TOC entry 251 (class 1259 OID 142037)
+-- Name: mngmnt_survey; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.mngmnt_survey (
+    id integer NOT NULL,
+    procedureid integer,
+    uid character varying(255),
+    uname character varying(255),
+    tasks json,
+    status boolean DEFAULT false,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    businessnum character varying(255),
+    customer_name character varying(255) DEFAULT ''::character varying,
+    input_p text,
+    input_f text,
+    date_val date,
+    subjects json,
+    is_done boolean DEFAULT false
+);
+
+
+ALTER TABLE public.mngmnt_survey OWNER TO myuser;
+
+--
+-- TOC entry 234 (class 1259 OID 51308)
+-- Name: musaf; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.musaf (
+    id integer NOT NULL,
+    procedureid integer,
+    status character varying(255) DEFAULT ''::character varying,
+    customer_name character varying(255),
+    customersite character varying(255),
+    tech_comment character varying(255),
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    lab_id character varying(255),
+    alignment character varying(255),
+    musaf_kind character varying(255),
+    supplier_id character varying(255),
+    thrdsd_ispct_date character varying(255),
+    density character varying(255),
+    quantity character varying(255),
+    quantity_daily_use character varying(255),
+    is_splr_afc boolean,
+    afec_musaf_name character varying(255),
+    musaf_type character varying(255),
+    third_s_musaf_name character varying(255),
+    chk_trdsd_prcs_end boolean,
+    netila boolean,
+    businessnum character varying(255),
+    barcode character varying(255),
+    batch character varying(255),
+    afec_factory_prcss boolean DEFAULT false,
+    afec_fourth_lab_inspct json,
+    new_lab character varying(255),
+    new_third_s_musaf_name character varying(255),
+    new_supplier character varying(255),
+    mnt_new_lab_id boolean,
+    mnt_new_supplier_id boolean,
+    mnt_new_third_s_musaf_name boolean
+);
+
+
+ALTER TABLE public.musaf OWNER TO myuser;
+
+--
+-- TOC entry 237 (class 1259 OID 51498)
+-- Name: musaf_lab_prcs; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.musaf_lab_prcs (
+    id bigint NOT NULL,
+    musaf_barcode character varying(255),
+    procedureid character varying(255),
+    businessnum character varying(255),
+    customer_name character varying(255),
+    musaf character varying(255),
+    batch character varying(255),
+    uid character varying(255),
+    uname character varying(255),
+    mount_fourth_lab_inspct boolean,
+    density character varying(255),
+    ph character varying(255),
+    solids_content character varying(255),
+    c character varying(255),
+    mnt_gelem_value_list boolean,
+    musaf_info json,
+    gelem_invrtr json,
+    mixture json,
+    mixture_inspctn json,
+    cube json,
+    mixture_musaf json,
+    cube_musaf json,
+    mixture_inspctn_musaf json,
+    barcodes_info json,
+    is_afec boolean,
+    mnt_mixture boolean,
+    mnt_mixture_inspctn boolean,
+    mnt_cube boolean,
+    mnt_mixture_musaf boolean,
+    mnt_mixture_inspctn_musaf boolean,
+    mnt_cube_musaf boolean,
+    can_bulk_update boolean,
+    ended boolean DEFAULT false,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    cube_initial_state json,
+    mnt_cube_initial_state boolean,
+    v_volume character varying(255),
+    v_volume_pls_msf character varying(255),
+    alrt_24hr_fourth_inspct boolean DEFAULT false,
+    fourth_half_mount boolean,
+    cube_creation_dd timestamp with time zone,
+    is_derived boolean DEFAULT false,
+    derived_procedureid character varying(255)
+);
+
+
+ALTER TABLE public.musaf_lab_prcs OWNER TO myuser;
+
+--
+-- TOC entry 205 (class 1259 OID 33632)
+-- Name: netila; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.netila (
+    id character varying(255) NOT NULL,
+    procedureid integer,
+    status character varying(255) DEFAULT ''::character varying,
+    customer_name character varying(255),
+    customerid bigint NOT NULL,
+    customersite character varying(255),
+    shipment_nmbr character varying(255),
+    concrete_type character varying(255),
+    concrete_kind character varying(255),
+    mixernum character varying(255),
+    exposure_rate character varying(255) DEFAULT 'לא נמסר'::character varying,
+    external_lab character varying(255) DEFAULT 'none'::character varying,
+    concrete_volume character varying(255),
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    tech_comment character varying(255),
+    declined_tested character varying(255),
+    somechmethod character varying(255),
+    requiredsomech numeric,
+    somech character varying(255),
+    correctvalue character varying(255),
+    temp character varying(255),
+    agregat_wetness_mudrag character varying(255),
+    agregat_wetness_hol character varying(255),
+    agregat_wetness_sumsum character varying(255),
+    envtemp character varying(255)
+);
+
+
+ALTER TABLE public.netila OWNER TO myuser;
+
+--
+-- TOC entry 216 (class 1259 OID 41948)
+-- Name: netila_mesira; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.netila_mesira (
+    id character varying(255) NOT NULL,
+    current_faze character varying(255),
+    mesira_mapping json,
+    businessnum character varying(255),
+    customer_name character varying(255) DEFAULT ''::character varying,
+    site_name character varying(255) DEFAULT ''::character varying,
+    location_take character varying(255),
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    uid integer,
+    uname character varying(255),
+    sample_list character varying(255),
+    factory_name character varying(255) DEFAULT ''::character varying
+);
+
+
+ALTER TABLE public.netila_mesira OWNER TO myuser;
+
+--
+-- TOC entry 209 (class 1259 OID 33748)
+-- Name: procedures; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.procedures (
+    id integer NOT NULL,
+    cid bigint,
+    cname text,
+    procedure_model_id integer,
+    modelname text,
+    atomic_tasks character varying(255)[],
+    atomic_tasks_heb character varying(255)[],
+    description text,
+    startdate date NOT NULL,
+    actualstartdate timestamp with time zone,
+    extradatafield json,
+    progress_status text DEFAULT 'לא התחיל'::text NOT NULL,
+    alerts_obj json,
+    atask_current_stage text DEFAULT ''::text,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    atask_current_stage_assign_tech text,
+    default_technician integer,
+    numof_atmctsk_to_auto_generate integer DEFAULT 0,
+    is_active boolean DEFAULT true,
+    factory_bn character varying(255),
+    factory_name character varying(255),
+    general_obj_list json,
+    lab_crrnt_stage character varying(255),
+    role character varying(255),
+    day character varying(255),
+    origin_date character varying(255),
+    rgnrt_id bigint,
+    is_extrnal_lab boolean DEFAULT false,
+    pickup_status integer
+);
+
+
+ALTER TABLE public.procedures OWNER TO myuser;
+
+--
+-- TOC entry 208 (class 1259 OID 33746)
+-- Name: procedures_id_seq; Type: SEQUENCE; Schema: public; Owner: myuser
+--
+
+CREATE SEQUENCE public.procedures_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.procedures_id_seq OWNER TO myuser;
+
+--
+-- TOC entry 3589 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: procedures_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: myuser
+--
+
+ALTER SEQUENCE public.procedures_id_seq OWNED BY public.procedures.id;
+
+
+--
+-- TOC entry 204 (class 1259 OID 33535)
+-- Name: proceduresmodel; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.proceduresmodel (
+    id integer NOT NULL,
+    modelname text NOT NULL,
+    num_of_atomic_tasks integer NOT NULL,
+    atomic_tasks character varying(255)[] NOT NULL,
+    atomic_tasks_heb character varying(255)[] NOT NULL,
+    is_extradata boolean DEFAULT false,
+    extradata_field json,
+    extra_datafield_text character varying(255),
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    alerts_obj json,
+    numof_atmctsk_to_auto_generate integer DEFAULT 0,
+    role_access character varying(255)
+);
+
+
+ALTER TABLE public.proceduresmodel OWNER TO myuser;
+
+--
+-- TOC entry 264 (class 1259 OID 215998)
+-- Name: push_alerts; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.push_alerts (
+    id character varying(255) NOT NULL,
+    alert_type character varying(255),
+    procedure_model_id integer,
+    modelname character varying(255),
+    procedure_id character varying(255),
+    description text,
+    cid character varying(255),
+    cname character varying(255),
+    default_technician integer,
+    resolved boolean DEFAULT false,
+    resolved_reason character varying(255),
+    push_id boolean DEFAULT false,
+    push_type character varying(255) DEFAULT 'email'::character varying,
+    "createdAt" timestamp with time zone,
+    "updatedAt" timestamp with time zone,
+    d_date date,
+    s_date date,
+    f_date date,
+    qc_m_sent boolean DEFAULT false,
+    mngr_sent boolean DEFAULT false
+);
+
+
+ALTER TABLE public.push_alerts OWNER TO myuser;
+
+--
+-- TOC entry 265 (class 1259 OID 224050)
+-- Name: push_alerts_cubes; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.push_alerts_cubes (
+    id bigint NOT NULL,
+    alert_type character varying(255),
+    procedure_model_id integer,
+    modelname character varying(255),
+    procedure_id character varying(255),
+    description character varying(255),
+    cid character varying(255),
+    cname character varying(255),
+    default_technician integer,
+    resolved boolean DEFAULT false,
+    resolved_reason character varying(255),
+    push_id boolean DEFAULT false,
+    push_type character varying(255) DEFAULT 'email'::character varying,
+    "createdAt" timestamp with time zone,
+    "updatedAt" timestamp with time zone,
+    d_date date,
+    qc_m_sent boolean DEFAULT false,
+    mngr_sent boolean DEFAULT false
+);
+
+
+ALTER TABLE public.push_alerts_cubes OWNER TO myuser;
+
+--
+-- TOC entry 263 (class 1259 OID 215989)
+-- Name: push_alerts_model; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.push_alerts_model (
+    id integer NOT NULL,
+    model_type integer,
+    model_detailes character varying(255),
+    qc_manager_elapsed_t integer,
+    manager_elapsed_t integer,
+    p_exist_check_by_interval integer,
+    push_type character varying(255),
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.push_alerts_model OWNER TO myuser;
+
+--
+-- TOC entry 262 (class 1259 OID 215987)
+-- Name: push_alerts_model_id_seq; Type: SEQUENCE; Schema: public; Owner: myuser
+--
+
+CREATE SEQUENCE public.push_alerts_model_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.push_alerts_model_id_seq OWNER TO myuser;
+
+--
+-- TOC entry 3590 (class 0 OID 0)
+-- Dependencies: 262
+-- Name: push_alerts_model_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: myuser
+--
+
+ALTER SEQUENCE public.push_alerts_model_id_seq OWNED BY public.push_alerts_model.id;
+
+
+--
+-- TOC entry 241 (class 1259 OID 51836)
+-- Name: quality_tests; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.quality_tests (
+    id integer NOT NULL,
+    procedureid integer,
+    businessnum character varying(255),
+    customer_name character varying(255) DEFAULT ''::character varying,
+    site_name character varying(255) DEFAULT ''::character varying,
+    uid character varying(255),
+    uname character varying(255),
+    customersite character varying(255),
+    tech_comment character varying(255),
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    quality_managment_inner_state json,
+    control_of_raw_materials_inner_state json,
+    control_production_equipment_and_lab_inner_state json,
+    production_loading_arrangement_inner_state json,
+    yard_receiving_raw_materials_inner_state json,
+    mixers_pls_extension_inner_state json,
+    checked_data json,
+    procedure_final_score character varying(255),
+    save_option boolean DEFAULT true
+);
+
+
+ALTER TABLE public.quality_tests OWNER TO myuser;
+
+--
+-- TOC entry 267 (class 1259 OID 224200)
+-- Name: rgnrt_prcds_trckn; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.rgnrt_prcds_trckn (
+    id bigint NOT NULL,
+    data json,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.rgnrt_prcds_trckn OWNER TO myuser;
+
+--
+-- TOC entry 266 (class 1259 OID 224198)
+-- Name: rgnrt_prcds_trckn_id_seq; Type: SEQUENCE; Schema: public; Owner: myuser
+--
+
+CREATE SEQUENCE public.rgnrt_prcds_trckn_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.rgnrt_prcds_trckn_id_seq OWNER TO myuser;
+
+--
+-- TOC entry 3591 (class 0 OID 0)
+-- Dependencies: 266
+-- Name: rgnrt_prcds_trckn_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: myuser
+--
+
+ALTER SEQUENCE public.rgnrt_prcds_trckn_id_seq OWNED BY public.rgnrt_prcds_trckn.id;
+
+
+--
+-- TOC entry 215 (class 1259 OID 41927)
+-- Name: sample; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.sample (
+    id character varying(255) NOT NULL,
+    procedureid character varying(255),
+    deafult_tecnichian_id integer,
+    deafult_tecnichian_name character varying(255),
+    deadlock boolean DEFAULT true,
+    current_holder_id integer,
+    current_holder_name character varying(255),
+    current_faze character varying(255),
+    mesira_mapping text DEFAULT ''::text,
+    businessnum character varying(255),
+    customer_name character varying(255) DEFAULT ''::character varying,
+    site_name character varying(255) DEFAULT ''::character varying,
+    agregate_origin character varying(255),
+    location_take character varying(255),
+    agregate_type character varying(255),
+    agergate_nickname character varying(255),
+    volume_scale character varying(255),
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    lab_associated boolean DEFAULT false,
+    startdate date,
+    qcmanger_associated boolean DEFAULT false,
+    ended boolean DEFAULT false,
+    sample_type character varying(255),
+    batch character varying(255),
+    is_extrnal_lab boolean,
+    extrnal_lab jsonb
+);
+
+
+ALTER TABLE public.sample OWNER TO myuser;
+
+--
+-- TOC entry 268 (class 1259 OID 232308)
+-- Name: settings; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.settings (
+    s_name character varying(255) NOT NULL,
+    s_txt text NOT NULL,
+    s_val character varying(255),
+    s_blln_val boolean,
+    customer_id integer,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.settings OWNER TO myuser;
+
+--
+-- TOC entry 206 (class 1259 OID 33653)
+-- Name: somech; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.somech (
+    id character varying(255) NOT NULL,
+    taskid integer,
+    declined_tested character varying(255),
+    status character varying(255) DEFAULT ''::character varying,
+    somechmethod character varying(255),
+    requiredsomech numeric,
+    somech character varying(255),
+    correctvalue character varying(255),
+    temp character varying(255),
+    agregat_wetness_mudrag character varying(255),
+    agregat_wetness_hol character varying(255),
+    agregat_wetness_sumsum character varying(255),
+    envtemp character varying(255),
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    tech_comment character varying(255)
+);
+
+
+ALTER TABLE public.somech OWNER TO myuser;
+
+--
+-- TOC entry 214 (class 1259 OID 41540)
+-- Name: sptlweight_aircntnt; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.sptlweight_aircntnt (
+    id character varying(255) NOT NULL,
+    taskid integer,
+    businessnum integer,
+    customer_name character varying(255) DEFAULT ''::character varying,
+    factory_name character varying(255) DEFAULT ''::character varying,
+    production_pos character varying(255),
+    delivery_certific character varying(255),
+    site_name character varying(255),
+    mixer character varying(255),
+    cubic_meter character varying(255),
+    serial_head character varying(255),
+    sample character varying(255),
+    somech character varying(255),
+    a1 character varying(255),
+    a2 character varying(255),
+    a3 character varying(255),
+    b1 character varying(255),
+    b2 character varying(255),
+    b3 character varying(255),
+    c1 character varying(255),
+    c2 character varying(255),
+    c3 character varying(255),
+    f character varying(255),
+    tech_comment character varying(255),
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    d1 character varying(255),
+    d2 character varying(255),
+    d3 character varying(255),
+    e1 character varying(255),
+    e2 character varying(255),
+    e3 character varying(255),
+    product_val character varying(255),
+    w character varying(255),
+    v character varying(255),
+    g character varying(255),
+    cement character varying(255),
+    ash character varying(255),
+    water character varying(255),
+    air_content character varying(255),
+    certificate character varying(255),
+    aircntnt_in_factory character varying(255),
+    a character varying(255),
+    b character varying(255),
+    air_pressure character varying(255),
+    adash character varying(255),
+    sand character varying(255),
+    fulia character varying(255),
+    mudrag character varying(255),
+    musaf_second character varying(255),
+    musaf_volume character varying(255),
+    musaf_second_volume character varying(255),
+    other character varying(255),
+    other_second character varying(255),
+    other_volume character varying(255),
+    other_second_volume character varying(255),
+    faze_two boolean DEFAULT false,
+    uid integer,
+    uname character varying(255),
+    mixture_id character varying(255),
+    new_product character varying(255)
+);
+
+
+ALTER TABLE public.sptlweight_aircntnt OWNER TO myuser;
+
+--
+-- TOC entry 228 (class 1259 OID 42601)
+-- Name: stats; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.stats (
+    id integer NOT NULL,
+    name character varying(255),
+    businessnum character varying(255),
+    start_date character varying(255),
+    finish_date character varying(255),
+    self_lab_asterisk character varying(255),
+    lab_asterisk character varying(255),
+    failure_rate character varying(255),
+    canceled_asterisk character varying(255),
+    final_failure_rate character varying(255),
+    reamark_a character varying(255),
+    reamark_b character varying(255),
+    blob json,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    self_lab_samples integer,
+    lab_samples integer,
+    total_asterisk integer,
+    asterisk_ignored integer,
+    total_lab_sample integer,
+    product_select character varying(255),
+    remarks_a character varying(255),
+    remarks_b character varying(255),
+    stats_blob json,
+    type character varying(255)
+);
+
+
+ALTER TABLE public.stats OWNER TO myuser;
+
+--
+-- TOC entry 230 (class 1259 OID 42705)
+-- Name: stats_b; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.stats_b (
+    id integer NOT NULL,
+    name character varying(255),
+    businessnum character varying(255),
+    start_date character varying(255),
+    finish_date character varying(255),
+    blob json,
+    product_select character varying(255),
+    stats_blob json,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.stats_b OWNER TO myuser;
+
+--
+-- TOC entry 229 (class 1259 OID 42703)
+-- Name: stats_b_id_seq; Type: SEQUENCE; Schema: public; Owner: myuser
+--
+
+CREATE SEQUENCE public.stats_b_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.stats_b_id_seq OWNER TO myuser;
+
+--
+-- TOC entry 3592 (class 0 OID 0)
+-- Dependencies: 229
+-- Name: stats_b_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: myuser
+--
+
+ALTER SEQUENCE public.stats_b_id_seq OWNED BY public.stats_b.id;
+
+
+--
+-- TOC entry 227 (class 1259 OID 42599)
+-- Name: stats_id_seq; Type: SEQUENCE; Schema: public; Owner: myuser
+--
+
+CREATE SEQUENCE public.stats_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.stats_id_seq OWNER TO myuser;
+
+--
+-- TOC entry 3593 (class 0 OID 0)
+-- Dependencies: 227
+-- Name: stats_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: myuser
+--
+
+ALTER SEQUENCE public.stats_id_seq OWNED BY public.stats.id;
+
+
+--
+-- TOC entry 226 (class 1259 OID 42590)
+-- Name: statscentralized; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.statscentralized (
+    id integer NOT NULL,
+    name character varying(255),
+    businessnum integer,
+    quarter integer,
+    year integer,
+    concrete_type character varying(255),
+    numof_takes character varying(255),
+    avg character varying(255),
+    std character varying(255),
+    difference character varying(255),
+    strength character varying(255),
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    blob json
+);
+
+
+ALTER TABLE public.statscentralized OWNER TO myuser;
+
+--
+-- TOC entry 225 (class 1259 OID 42588)
+-- Name: statscentralized_id_seq; Type: SEQUENCE; Schema: public; Owner: myuser
+--
+
+CREATE SEQUENCE public.statscentralized_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.statscentralized_id_seq OWNER TO myuser;
+
+--
+-- TOC entry 3594 (class 0 OID 0)
+-- Dependencies: 225
+-- Name: statscentralized_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: myuser
+--
+
+ALTER SEQUENCE public.statscentralized_id_seq OWNED BY public.statscentralized.id;
+
+
+--
+-- TOC entry 258 (class 1259 OID 199466)
+-- Name: supplier; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.supplier (
+    id integer NOT NULL,
+    name character varying(255),
+    customers_list jsonb,
+    factory_list jsonb,
+    type jsonb,
+    contact_list json,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.supplier OWNER TO myuser;
+
+--
+-- TOC entry 259 (class 1259 OID 199474)
+-- Name: supplier_evaluation; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.supplier_evaluation (
+    procedureid integer NOT NULL,
+    uid character varying(255),
+    uname character varying(255),
+    businessnum character varying(255),
+    customer_name character varying(255) DEFAULT ''::character varying,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    docs json,
+    mnt_btbl boolean,
+    suppliers json
+);
+
+
+ALTER TABLE public.supplier_evaluation OWNER TO myuser;
+
+--
+-- TOC entry 244 (class 1259 OID 60062)
+-- Name: trnng_mltchoise; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.trnng_mltchoise (
+    id integer NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    params json,
+    tests_state json,
+    tokens json DEFAULT '[]'::json NOT NULL,
+    procedureid integer,
+    businessnum character varying(255),
+    customer_name character varying(255) DEFAULT ''::character varying,
+    site_name character varying(255) DEFAULT ''::character varying,
+    uid character varying(255),
+    uname character varying(255),
+    customersite character varying(255),
+    manpower_list json,
+    customer_origin_manpower json
+);
+
+
+ALTER TABLE public.trnng_mltchoise OWNER TO myuser;
+
+--
+-- TOC entry 250 (class 1259 OID 117502)
+-- Name: trnng_mltchoise_saas; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.trnng_mltchoise_saas (
+    id bigint NOT NULL,
+    name character varying(255) DEFAULT ''::character varying,
+    params json,
+    tests_state json,
+    tokens json DEFAULT '[]'::json NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    u_id integer,
+    manpower_list json,
+    "deletedAt" timestamp with time zone,
+    cid character varying(255) DEFAULT ''::character varying,
+    cname character varying(255) DEFAULT ''::character varying
+);
+
+
+ALTER TABLE public.trnng_mltchoise_saas OWNER TO myuser;
+
+--
+-- TOC entry 261 (class 1259 OID 215876)
+-- Name: unfit_prdct; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.unfit_prdct (
+    id bigint NOT NULL,
+    form_id bigint,
+    sub_form_type character varying(255),
+    uid character varying(255),
+    user_x character varying(255),
+    detailes jsonb,
+    status boolean,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.unfit_prdct OWNER TO myuser;
+
+--
+-- TOC entry 260 (class 1259 OID 215874)
+-- Name: unfit_prdct_id_seq; Type: SEQUENCE; Schema: public; Owner: myuser
+--
+
+CREATE SEQUENCE public.unfit_prdct_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.unfit_prdct_id_seq OWNER TO myuser;
+
+--
+-- TOC entry 3595 (class 0 OID 0)
+-- Dependencies: 260
+-- Name: unfit_prdct_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: myuser
+--
+
+ALTER SEQUENCE public.unfit_prdct_id_seq OWNED BY public.unfit_prdct.id;
+
+
+--
+-- TOC entry 203 (class 1259 OID 16468)
+-- Name: users; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.users (
+    uid integer NOT NULL,
+    role text,
+    name character varying(255) NOT NULL,
+    password character varying(64) NOT NULL,
+    email text NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    tokens json DEFAULT '[]'::json NOT NULL,
+    linkd_businessnum bigint DEFAULT 0 NOT NULL,
+    is_lab_authorized boolean DEFAULT false,
+    events_log json
+);
+
+
+ALTER TABLE public.users OWNER TO myuser;
+
+--
+-- TOC entry 202 (class 1259 OID 16466)
+-- Name: users_uid_seq; Type: SEQUENCE; Schema: public; Owner: myuser
+--
+
+CREATE SEQUENCE public.users_uid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_uid_seq OWNER TO myuser;
+
+--
+-- TOC entry 3596 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: users_uid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: myuser
+--
+
+ALTER SEQUENCE public.users_uid_seq OWNED BY public.users.uid;
+
+
+--
+-- TOC entry 238 (class 1259 OID 51680)
+-- Name: water_meter; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.water_meter (
+    id integer NOT NULL,
+    procedureid integer,
+    businessnum character varying(255),
+    customer_name character varying(255) DEFAULT ''::character varying,
+    site_name character varying(255) DEFAULT ''::character varying,
+    year integer,
+    month integer,
+    water_meters_info json,
+    uid character varying(255),
+    tech_comment character varying(255),
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    customersite character varying(255),
+    sum_data json,
+    uname character varying(255)
+);
+
+
+ALTER TABLE public.water_meter OWNER TO myuser;
+
+--
+-- TOC entry 3193 (class 2604 OID 42397)
+-- Name: alerts id; Type: DEFAULT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.alerts ALTER COLUMN id SET DEFAULT nextval('public.alerts_id_seq'::regclass);
+
+
+--
+-- TOC entry 3192 (class 2604 OID 42081)
+-- Name: alertsmodel id; Type: DEFAULT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.alertsmodel ALTER COLUMN id SET DEFAULT nextval('public.alertsmodel_id_seq'::regclass);
+
+
+--
+-- TOC entry 3214 (class 2604 OID 51826)
+-- Name: bank_quality_tests id; Type: DEFAULT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.bank_quality_tests ALTER COLUMN id SET DEFAULT nextval('public.bank_quality_tests_id_seq'::regclass);
+
+
+--
+-- TOC entry 3219 (class 2604 OID 51877)
+-- Name: bank_trnng_mltchoise id; Type: DEFAULT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.bank_trnng_mltchoise ALTER COLUMN id SET DEFAULT nextval('public.bank_trnng_mltchoise_id_seq'::regclass);
+
+
+--
+-- TOC entry 3241 (class 2604 OID 117465)
+-- Name: bank_trnng_mltchoise_saas id; Type: DEFAULT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.bank_trnng_mltchoise_saas ALTER COLUMN id SET DEFAULT nextval('public.bank_trnng_mltchoise_saas_id_seq'::regclass);
+
+
+--
+-- TOC entry 3205 (class 2604 OID 51227)
+-- Name: cement_type id; Type: DEFAULT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.cement_type ALTER COLUMN id SET DEFAULT nextval('public.cement_type_id_seq'::regclass);
+
+
+--
+-- TOC entry 3259 (class 2604 OID 199442)
+-- Name: complaint_form id; Type: DEFAULT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.complaint_form ALTER COLUMN id SET DEFAULT nextval('public.complaint_form_id_seq'::regclass);
+
+
+--
+-- TOC entry 3258 (class 2604 OID 191216)
+-- Name: corrective_actions_execute id; Type: DEFAULT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.corrective_actions_execute ALTER COLUMN id SET DEFAULT nextval('public.corrective_actions_execute_id_seq'::regclass);
+
+
+--
+-- TOC entry 3199 (class 2604 OID 42578)
+-- Name: cto_table_number_five id; Type: DEFAULT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.cto_table_number_five ALTER COLUMN id SET DEFAULT nextval('public.cto_table_number_five_id_seq'::regclass);
+
+
+--
+-- TOC entry 3171 (class 2604 OID 41531)
+-- Name: factories id; Type: DEFAULT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.factories ALTER COLUMN id SET DEFAULT nextval('public.factories_id_seq'::regclass);
+
+
+--
+-- TOC entry 3160 (class 2604 OID 33751)
+-- Name: procedures id; Type: DEFAULT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.procedures ALTER COLUMN id SET DEFAULT nextval('public.procedures_id_seq'::regclass);
+
+
+--
+-- TOC entry 3265 (class 2604 OID 215992)
+-- Name: push_alerts_model id; Type: DEFAULT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.push_alerts_model ALTER COLUMN id SET DEFAULT nextval('public.push_alerts_model_id_seq'::regclass);
+
+
+--
+-- TOC entry 3276 (class 2604 OID 224203)
+-- Name: rgnrt_prcds_trckn id; Type: DEFAULT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.rgnrt_prcds_trckn ALTER COLUMN id SET DEFAULT nextval('public.rgnrt_prcds_trckn_id_seq'::regclass);
+
+
+--
+-- TOC entry 3203 (class 2604 OID 42604)
+-- Name: stats id; Type: DEFAULT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.stats ALTER COLUMN id SET DEFAULT nextval('public.stats_id_seq'::regclass);
+
+
+--
+-- TOC entry 3204 (class 2604 OID 42708)
+-- Name: stats_b id; Type: DEFAULT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.stats_b ALTER COLUMN id SET DEFAULT nextval('public.stats_b_id_seq'::regclass);
+
+
+--
+-- TOC entry 3202 (class 2604 OID 42593)
+-- Name: statscentralized id; Type: DEFAULT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.statscentralized ALTER COLUMN id SET DEFAULT nextval('public.statscentralized_id_seq'::regclass);
+
+
+--
+-- TOC entry 3264 (class 2604 OID 215879)
+-- Name: unfit_prdct id; Type: DEFAULT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.unfit_prdct ALTER COLUMN id SET DEFAULT nextval('public.unfit_prdct_id_seq'::regclass);
+
+
+--
+-- TOC entry 3134 (class 2604 OID 16471)
+-- Name: users uid; Type: DEFAULT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN uid SET DEFAULT nextval('public.users_uid_seq'::regclass);
+
+
+--
+-- TOC entry 3420 (class 2606 OID 166622)
+-- Name: agreement_survey agreement_survey_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.agreement_survey
+    ADD CONSTRAINT agreement_survey_pkey PRIMARY KEY (procedureid);
+
+
+--
+-- TOC entry 3372 (class 2606 OID 42020)
+-- Name: agregates_labprcs agregates_labprcs_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.agregates_labprcs
+    ADD CONSTRAINT agregates_labprcs_pkey PRIMARY KEY (barcode);
+
+
+--
+-- TOC entry 3376 (class 2606 OID 42402)
+-- Name: alerts alerts_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.alerts
+    ADD CONSTRAINT alerts_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3374 (class 2606 OID 42086)
+-- Name: alertsmodel alertsmodel_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.alertsmodel
+    ADD CONSTRAINT alertsmodel_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3334 (class 2606 OID 33770)
+-- Name: atomictasks atomictasks_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.atomictasks
+    ADD CONSTRAINT atomictasks_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3400 (class 2606 OID 51832)
+-- Name: bank_quality_tests bank_quality_tests_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.bank_quality_tests
+    ADD CONSTRAINT bank_quality_tests_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3404 (class 2606 OID 51890)
+-- Name: bank_trnng_mltchoise bank_trnng_mltchoise_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.bank_trnng_mltchoise
+    ADD CONSTRAINT bank_trnng_mltchoise_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3414 (class 2606 OID 117478)
+-- Name: bank_trnng_mltchoise_saas bank_trnng_mltchoise_saas_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.bank_trnng_mltchoise_saas
+    ADD CONSTRAINT bank_trnng_mltchoise_saas_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3410 (class 2606 OID 101094)
+-- Name: calibration calibration_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.calibration
+    ADD CONSTRAINT calibration_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3388 (class 2606 OID 51294)
+-- Name: cement cement_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.cement
+    ADD CONSTRAINT cement_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3386 (class 2606 OID 51232)
+-- Name: cement_type cement_type_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.cement_type
+    ADD CONSTRAINT cement_type_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3424 (class 2606 OID 199448)
+-- Name: complaint_form complaint_form_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.complaint_form
+    ADD CONSTRAINT complaint_form_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3422 (class 2606 OID 191221)
+-- Name: corrective_actions_execute corrective_actions_execute_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.corrective_actions_execute
+    ADD CONSTRAINT corrective_actions_execute_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3426 (class 2606 OID 199460)
+-- Name: corrective_actions_form corrective_actions_form_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.corrective_actions_form
+    ADD CONSTRAINT corrective_actions_form_pkey PRIMARY KEY (procedureid);
+
+
+--
+-- TOC entry 3394 (class 2606 OID 51331)
+-- Name: cto_table_afec_musaf_list cto_table_afec_musaf_list_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.cto_table_afec_musaf_list
+    ADD CONSTRAINT cto_table_afec_musaf_list_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3378 (class 2606 OID 42582)
+-- Name: cto_table_number_five cto_table_number_five_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.cto_table_number_five
+    ADD CONSTRAINT cto_table_number_five_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3392 (class 2606 OID 51326)
+-- Name: cto_table_number_nine cto_table_number_nine_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.cto_table_number_nine
+    ADD CONSTRAINT cto_table_number_nine_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3330 (class 2606 OID 33694)
+-- Name: cube cube_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.cube
+    ADD CONSTRAINT cube_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3336 (class 2606 OID 51752)
+-- Name: customers customers_businessnum_key; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.customers
+    ADD CONSTRAINT customers_businessnum_key UNIQUE (businessnum);
+
+
+--
+-- TOC entry 3338 (class 2606 OID 51748)
+-- Name: customers customers_businessnum_key1; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.customers
+    ADD CONSTRAINT customers_businessnum_key1 UNIQUE (businessnum);
+
+
+--
+-- TOC entry 3340 (class 2606 OID 51764)
+-- Name: customers customers_businessnum_key10; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.customers
+    ADD CONSTRAINT customers_businessnum_key10 UNIQUE (businessnum);
+
+
+--
+-- TOC entry 3342 (class 2606 OID 51766)
+-- Name: customers customers_businessnum_key11; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.customers
+    ADD CONSTRAINT customers_businessnum_key11 UNIQUE (businessnum);
+
+
+--
+-- TOC entry 3344 (class 2606 OID 51740)
+-- Name: customers customers_businessnum_key12; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.customers
+    ADD CONSTRAINT customers_businessnum_key12 UNIQUE (businessnum);
+
+
+--
+-- TOC entry 3346 (class 2606 OID 51754)
+-- Name: customers customers_businessnum_key2; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.customers
+    ADD CONSTRAINT customers_businessnum_key2 UNIQUE (businessnum);
+
+
+--
+-- TOC entry 3348 (class 2606 OID 51756)
+-- Name: customers customers_businessnum_key3; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.customers
+    ADD CONSTRAINT customers_businessnum_key3 UNIQUE (businessnum);
+
+
+--
+-- TOC entry 3350 (class 2606 OID 51746)
+-- Name: customers customers_businessnum_key4; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.customers
+    ADD CONSTRAINT customers_businessnum_key4 UNIQUE (businessnum);
+
+
+--
+-- TOC entry 3352 (class 2606 OID 51758)
+-- Name: customers customers_businessnum_key5; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.customers
+    ADD CONSTRAINT customers_businessnum_key5 UNIQUE (businessnum);
+
+
+--
+-- TOC entry 3354 (class 2606 OID 51760)
+-- Name: customers customers_businessnum_key6; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.customers
+    ADD CONSTRAINT customers_businessnum_key6 UNIQUE (businessnum);
+
+
+--
+-- TOC entry 3356 (class 2606 OID 51744)
+-- Name: customers customers_businessnum_key7; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.customers
+    ADD CONSTRAINT customers_businessnum_key7 UNIQUE (businessnum);
+
+
+--
+-- TOC entry 3358 (class 2606 OID 51762)
+-- Name: customers customers_businessnum_key8; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.customers
+    ADD CONSTRAINT customers_businessnum_key8 UNIQUE (businessnum);
+
+
+--
+-- TOC entry 3360 (class 2606 OID 51742)
+-- Name: customers customers_businessnum_key9; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.customers
+    ADD CONSTRAINT customers_businessnum_key9 UNIQUE (businessnum);
+
+
+--
+-- TOC entry 3362 (class 2606 OID 51750)
+-- Name: customers customers_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.customers
+    ADD CONSTRAINT customers_pkey PRIMARY KEY (businessnum);
+
+
+--
+-- TOC entry 3364 (class 2606 OID 41537)
+-- Name: factories factories_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.factories
+    ADD CONSTRAINT factories_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3412 (class 2606 OID 109282)
+-- Name: inventory inventory_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.inventory
+    ADD CONSTRAINT inventory_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3408 (class 2606 OID 84769)
+-- Name: mixer_uniformity mixer_uniformity_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.mixer_uniformity
+    ADD CONSTRAINT mixer_uniformity_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3418 (class 2606 OID 142045)
+-- Name: mngmnt_survey mngmnt_survey_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.mngmnt_survey
+    ADD CONSTRAINT mngmnt_survey_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3396 (class 2606 OID 51506)
+-- Name: musaf_lab_prcs musaf_lab_prcs_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.musaf_lab_prcs
+    ADD CONSTRAINT musaf_lab_prcs_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3390 (class 2606 OID 51316)
+-- Name: musaf musaf_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.musaf
+    ADD CONSTRAINT musaf_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3370 (class 2606 OID 41957)
+-- Name: netila_mesira netila_mesira_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.netila_mesira
+    ADD CONSTRAINT netila_mesira_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3326 (class 2606 OID 33643)
+-- Name: netila netila_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.netila
+    ADD CONSTRAINT netila_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3332 (class 2606 OID 33758)
+-- Name: procedures procedures_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.procedures
+    ADD CONSTRAINT procedures_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3324 (class 2606 OID 33543)
+-- Name: proceduresmodel proceduresmodel_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.proceduresmodel
+    ADD CONSTRAINT proceduresmodel_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3438 (class 2606 OID 224062)
+-- Name: push_alerts_cubes push_alerts_cubes_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.push_alerts_cubes
+    ADD CONSTRAINT push_alerts_cubes_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3434 (class 2606 OID 215997)
+-- Name: push_alerts_model push_alerts_model_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.push_alerts_model
+    ADD CONSTRAINT push_alerts_model_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3436 (class 2606 OID 216010)
+-- Name: push_alerts push_alerts_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.push_alerts
+    ADD CONSTRAINT push_alerts_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3402 (class 2606 OID 51845)
+-- Name: quality_tests quality_tests_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.quality_tests
+    ADD CONSTRAINT quality_tests_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3440 (class 2606 OID 224208)
+-- Name: rgnrt_prcds_trckn rgnrt_prcds_trckn_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.rgnrt_prcds_trckn
+    ADD CONSTRAINT rgnrt_prcds_trckn_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3368 (class 2606 OID 41937)
+-- Name: sample sample_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.sample
+    ADD CONSTRAINT sample_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3442 (class 2606 OID 232315)
+-- Name: settings settings_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.settings
+    ADD CONSTRAINT settings_pkey PRIMARY KEY (s_name);
+
+
+--
+-- TOC entry 3328 (class 2606 OID 33662)
+-- Name: somech somech_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.somech
+    ADD CONSTRAINT somech_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3366 (class 2606 OID 41549)
+-- Name: sptlweight_aircntnt sptlweight_aircntnt_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.sptlweight_aircntnt
+    ADD CONSTRAINT sptlweight_aircntnt_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3384 (class 2606 OID 42713)
+-- Name: stats_b stats_b_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.stats_b
+    ADD CONSTRAINT stats_b_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3382 (class 2606 OID 42609)
+-- Name: stats stats_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.stats
+    ADD CONSTRAINT stats_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3380 (class 2606 OID 42598)
+-- Name: statscentralized statscentralized_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.statscentralized
+    ADD CONSTRAINT statscentralized_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3430 (class 2606 OID 199482)
+-- Name: supplier_evaluation supplier_evaluation_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.supplier_evaluation
+    ADD CONSTRAINT supplier_evaluation_pkey PRIMARY KEY (procedureid);
+
+
+--
+-- TOC entry 3428 (class 2606 OID 199473)
+-- Name: supplier supplier_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.supplier
+    ADD CONSTRAINT supplier_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3406 (class 2606 OID 60071)
+-- Name: trnng_mltchoise trnng_mltchoise_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.trnng_mltchoise
+    ADD CONSTRAINT trnng_mltchoise_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3416 (class 2606 OID 117511)
+-- Name: trnng_mltchoise_saas trnng_mltchoise_saas_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.trnng_mltchoise_saas
+    ADD CONSTRAINT trnng_mltchoise_saas_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3432 (class 2606 OID 215884)
+-- Name: unfit_prdct unfit_prdct_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.unfit_prdct
+    ADD CONSTRAINT unfit_prdct_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3278 (class 2606 OID 207637)
+-- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_email_key UNIQUE (email);
+
+
+--
+-- TOC entry 3280 (class 2606 OID 207639)
+-- Name: users users_email_key1; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_email_key1 UNIQUE (email);
+
+
+--
+-- TOC entry 3282 (class 2606 OID 207653)
+-- Name: users users_email_key10; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_email_key10 UNIQUE (email);
+
+
+--
+-- TOC entry 3284 (class 2606 OID 207641)
+-- Name: users users_email_key2; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_email_key2 UNIQUE (email);
+
+
+--
+-- TOC entry 3286 (class 2606 OID 207643)
+-- Name: users users_email_key3; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_email_key3 UNIQUE (email);
+
+
+--
+-- TOC entry 3288 (class 2606 OID 207645)
+-- Name: users users_email_key4; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_email_key4 UNIQUE (email);
+
+
+--
+-- TOC entry 3290 (class 2606 OID 207647)
+-- Name: users users_email_key5; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_email_key5 UNIQUE (email);
+
+
+--
+-- TOC entry 3292 (class 2606 OID 207649)
+-- Name: users users_email_key6; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_email_key6 UNIQUE (email);
+
+
+--
+-- TOC entry 3294 (class 2606 OID 207635)
+-- Name: users users_email_key7; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_email_key7 UNIQUE (email);
+
+
+--
+-- TOC entry 3296 (class 2606 OID 207633)
+-- Name: users users_email_key8; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_email_key8 UNIQUE (email);
+
+
+--
+-- TOC entry 3298 (class 2606 OID 207651)
+-- Name: users users_email_key9; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_email_key9 UNIQUE (email);
+
+
+--
+-- TOC entry 3300 (class 2606 OID 207613)
+-- Name: users users_password_key; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_password_key UNIQUE (password);
+
+
+--
+-- TOC entry 3302 (class 2606 OID 207615)
+-- Name: users users_password_key1; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_password_key1 UNIQUE (password);
+
+
+--
+-- TOC entry 3304 (class 2606 OID 207629)
+-- Name: users users_password_key10; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_password_key10 UNIQUE (password);
+
+
+--
+-- TOC entry 3306 (class 2606 OID 207617)
+-- Name: users users_password_key2; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_password_key2 UNIQUE (password);
+
+
+--
+-- TOC entry 3308 (class 2606 OID 207619)
+-- Name: users users_password_key3; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_password_key3 UNIQUE (password);
+
+
+--
+-- TOC entry 3310 (class 2606 OID 207621)
+-- Name: users users_password_key4; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_password_key4 UNIQUE (password);
+
+
+--
+-- TOC entry 3312 (class 2606 OID 207623)
+-- Name: users users_password_key5; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_password_key5 UNIQUE (password);
+
+
+--
+-- TOC entry 3314 (class 2606 OID 207625)
+-- Name: users users_password_key6; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_password_key6 UNIQUE (password);
+
+
+--
+-- TOC entry 3316 (class 2606 OID 207611)
+-- Name: users users_password_key7; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_password_key7 UNIQUE (password);
+
+
+--
+-- TOC entry 3318 (class 2606 OID 207609)
+-- Name: users users_password_key8; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_password_key8 UNIQUE (password);
+
+
+--
+-- TOC entry 3320 (class 2606 OID 207627)
+-- Name: users users_password_key9; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_password_key9 UNIQUE (password);
+
+
+--
+-- TOC entry 3322 (class 2606 OID 16476)
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (uid);
+
+
+--
+-- TOC entry 3398 (class 2606 OID 51689)
+-- Name: water_meter water_meter_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.water_meter
+    ADD CONSTRAINT water_meter_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3578 (class 0 OID 0)
+-- Dependencies: 4
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE USAGE ON SCHEMA public FROM PUBLIC;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2023-06-20 15:55:27 IDT
+
+--
+-- PostgreSQL database dump complete
+--
+
